@@ -11,7 +11,7 @@ public class Util {
     public static final String API_KEY = "22ff92235b49d2df3cc7b94ef810d476";
     public static final String PUB_KEY = "22ff92235b49d2df3cc7b94ef810d476";
     public static final String PRI_KEY = "cfec79030b8096925168199e942d455b928a474a";
-    public static final int LIMIT = 20;
+    public static final int LIMIT = 50;
 
     public static String ts = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
 

@@ -28,4 +28,8 @@ public class MarvelCharactersViewModel extends AndroidViewModel {
     public LiveData<List<CharacterEntity>> getAllCharacters(MutableLiveData<Response> responseObserver){
         return repository.getAllCharacters(responseObserver);
     }
+
+    public LiveData<List<CharacterEntity>> getSearchList(String query){
+        return repository.searchCharacterByName(query);
+    }
 }

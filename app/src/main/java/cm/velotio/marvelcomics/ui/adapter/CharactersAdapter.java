@@ -37,6 +37,7 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
         CharacterEntity character = list.get(position);
         Glide.with(context).load(character.thumbnail+"."+character.extension)
                 .into(holder.binding.ivCharacter);
+        holder.binding.tvName.setText(character.name);
 
     }
 

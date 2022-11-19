@@ -24,6 +24,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
@@ -39,12 +40,11 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
     private MarvelComicsDao dao;
 
     private MutableLiveData<List<CharacterEntity>> listMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<CharacterEntity>> searchlistMutableLiveData = new MutableLiveData<>();
    /* private MutableLiveData<Response> _responseObserver = new MutableLiveData<>();
     public LiveData<Response> responseObserver = _responseObserver;*/
 
     List<CharacterEntity> resultsItems = new ArrayList<>();
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private boolean isInsertedList = false;
 
     public MarvelComicsRepositoryImpl(Application application){
         database = MarvelComicsDatabase.getInstance(application);
@@ -61,16 +61,13 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
         responseObserver.postValue(Response.loading());
         dao.getAllCharactersSize().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<List<CharacterEntity>>() {
             @Override
-            public void onSubscribe(@NonNull Disposable d) {
-
-            }
+            public void onSubscribe(@NonNull Disposable d) {}
 
             @Override
             public void onSuccess(@NonNull List<CharacterEntity> characterEntities) {
-                if (characterEntities.isEmpty() && !isInsertedList){
+                if (characterEntities.isEmpty()){
                     getCharacterListfromApi(responseObserver);
                     responseObserver.postValue(Response.success("Success"));
-                    isInsertedList = false;
                 }else {
                     listMutableLiveData.postValue(characterEntities);
                     responseObserver.postValue(Response.success("Success"));
@@ -140,5 +137,22 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
     @Override
     public void addAllCharacters(List<CharacterEntity> characters) {
 
+    }
+
+    @Override
+    public LiveData<List<CharacterEntity>> searchCharacterByName(String name) {
+        return getSearchList(name);
+    }
+
+    private LiveData<List<CharacterEntity>> getSearchList(String name) {
+        dao.searchCharacters(name).subscribeOn(Schedulers.io())
+                .subscribe(new Consumer<List<CharacterEntity>>() {
+                    @Override
+                    public void accept(List<CharacterEntity> characterEntities) throws Throwable {
+                        Log.d(TAG, "addTextChangedListener accept: "+characterEntities);
+                        searchlistMutableLiveData.postValue(characterEntities);
+                    }
+                });
+        return searchlistMutableLiveData;
     }
 }

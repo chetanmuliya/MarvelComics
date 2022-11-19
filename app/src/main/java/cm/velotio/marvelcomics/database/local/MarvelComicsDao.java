@@ -31,8 +31,8 @@ public interface MarvelComicsDao {
     @Query("SELECT * FROM characters")
     Single<List<CharacterEntity>> getAllCharactersSize();
 
-    @Query("SELECT * FROM characters")
-    List<CharacterEntity> isCharactersStored();
+    @Query("SELECT * FROM characters WHERE LOWER(name) LIKE '%' || LOWER(:query) || '%'")
+    Flowable<List<CharacterEntity>> searchCharacters(String query);
 
     @Query("SELECT * FROM characters WHERE id = :cid")
     CharacterEntity getCharactersById(String cid);

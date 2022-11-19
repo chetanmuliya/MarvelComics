@@ -20,4 +20,6 @@ public interface MarvelComicsRepository {
 
     void addAllCharacters(List<CharacterEntity> characters);
 
+    LiveData<List<CharacterEntity>> searchCharacterByName(String name);
+
 }

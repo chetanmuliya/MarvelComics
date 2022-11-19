@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -42,6 +44,32 @@ public class MainActivity extends AppCompatActivity {
 
         setUpAdapter();
         setupViewModel();
+        setUpUI();
+    }
+
+    private void setUpUI() {
+        binding.etSearchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                viewModel.getSearchList(s.toString()).observe(MainActivity.this, new Observer<List<CharacterEntity>>() {
+                    @Override
+                    public void onChanged(List<CharacterEntity> characterEntities) {
+                        Log.d(TAG, "onChanged: addTextChangedListener "+s);
+                        adapter.submitList(characterEntities);
+                    }
+                });
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void setUpAdapter() {
