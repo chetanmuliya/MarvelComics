@@ -53,32 +53,36 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
     }
 
     @Override
-    public LiveData<List<CharacterEntity>> getAllCharacters(MutableLiveData<Response> responseObserver){
-        return getAllCharactersFromRemote(responseObserver);
+    public LiveData<List<CharacterEntity>> getAllCharacters(MutableLiveData<Response> responseObserver,boolean isFetchFromApi){
+        return getAllCharactersFromRemote(responseObserver,isFetchFromApi);
     }
 
-    private LiveData<List<CharacterEntity>> getAllCharactersFromRemote(MutableLiveData<Response> responseObserver) {
+    private LiveData<List<CharacterEntity>> getAllCharactersFromRemote(MutableLiveData<Response> responseObserver,boolean isFetchFromApi) {
         responseObserver.postValue(Response.loading());
-        dao.getAllCharactersSize().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<List<CharacterEntity>>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {}
-
-            @Override
-            public void onSuccess(@NonNull List<CharacterEntity> characterEntities) {
-                if (characterEntities.isEmpty()){
-                    getCharacterListfromApi(responseObserver);
-                    responseObserver.postValue(Response.success("Success"));
-                }else {
-                    listMutableLiveData.postValue(characterEntities);
-                    responseObserver.postValue(Response.success("Success"));
+        if (isFetchFromApi){
+            getCharacterListfromApi(responseObserver);
+        }else {
+            dao.getAllCharactersSize().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<List<CharacterEntity>>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
                 }
-            }
 
-            @Override
-            public void onError(@NonNull Throwable e) {
-                responseObserver.postValue(Response.error("Something went wrong!"));
-            }
-        });
+                @Override
+                public void onSuccess(@NonNull List<CharacterEntity> characterEntities) {
+                    if (characterEntities.isEmpty()) {
+                        getCharacterListfromApi(responseObserver);
+                    } else {
+                        listMutableLiveData.postValue(characterEntities);
+                        responseObserver.postValue(Response.success("Success"));
+                    }
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    responseObserver.postValue(Response.error("Something went wrong!"));
+                }
+            });
+        }
         return listMutableLiveData;
     }
 
@@ -90,11 +94,14 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
                     @Override
                     public void onNext(@NonNull CharactersResponse charactersResponse) {
                         List<ResultsItem> list = charactersResponse != null ? charactersResponse.getData().getResults() : null;
+                        if (!resultsItems.isEmpty()) resultsItems.clear();
                         for (ResultsItem item:list){
                             resultsItems.add(new CharacterEntity(Integer.toString(item.getId()),item.getName(),
                                     item.getThumbnail().getPath(),item.getThumbnail().getExtension()));
                         }
+                        Log.d(TAG, "onNext: size "+resultsItems.size());
                         listMutableLiveData.postValue(resultsItems);
+                        deleteCharactersToLocal();
                         insertCharactersToLocal(resultsItems);
                         responseObserver.postValue(Response.success("Success"));
                     }
@@ -109,6 +116,10 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
 
                     }
                 });
+    }
+
+    private void deleteCharactersToLocal() {
+        dao.deleteAll().subscribeOn(Schedulers.io()).subscribe();
     }
 
     private void insertCharactersToLocal(List<CharacterEntity> resultsItems) {

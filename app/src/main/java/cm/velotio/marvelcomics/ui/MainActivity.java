@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -50,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpUI() {
         binding.etSearchBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -64,10 +63,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s) {}
+        });
 
+        //swiperefreshlayout
+        binding.swipeRefreshLay.setRefreshing(false);
+        binding.swipeRefreshLay.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.getAllCharacters(responseObserver,true).observe(MainActivity.this, new Observer<List<CharacterEntity>>() {
+                    @Override
+                    public void onChanged(List<CharacterEntity> list) {
+                        adapter.submitList(list);
+                    }
+                });
             }
         });
     }
@@ -80,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(MarvelCharactersViewModel.class);
-        viewModel.getAllCharacters(responseObserver).observe(this, new Observer<List<CharacterEntity>>() {
+        viewModel.getAllCharacters(responseObserver,false).observe(this, new Observer<List<CharacterEntity>>() {
             @Override
             public void onChanged(List<CharacterEntity> list) {
                 adapter.submitList(list);
@@ -101,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,response.error,Toast.LENGTH_LONG).show();
                         break;
                     }case SUCCESS: {
+                        binding.swipeRefreshLay.setRefreshing(false);
                         binding.progressBar.setVisibility(View.GONE);
                         Log.d(TAG, "onChanged: Success");
                         break;

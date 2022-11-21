@@ -12,7 +12,7 @@ import cm.velotio.marvelcomics.model.ResultsItem;
 
 public interface MarvelComicsRepository {
 
-    LiveData<List<CharacterEntity>> getAllCharacters(MutableLiveData<Response> responseObserver);
+    LiveData<List<CharacterEntity>> getAllCharacters(MutableLiveData<Response> responseObserver,boolean isFetchFromApi);
 
     List<CharacterEntity> getCharactersById();
 

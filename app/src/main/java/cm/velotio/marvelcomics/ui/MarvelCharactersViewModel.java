@@ -11,7 +11,6 @@ import java.util.List;
 
 import cm.velotio.marvelcomics.constant.Response;
 import cm.velotio.marvelcomics.database.local.CharacterEntity;
-import cm.velotio.marvelcomics.model.ResultsItem;
 import cm.velotio.marvelcomics.repository.MarvelComicsRepository;
 import cm.velotio.marvelcomics.repository.MarvelComicsRepositoryImpl;
 
@@ -25,8 +24,8 @@ public class MarvelCharactersViewModel extends AndroidViewModel {
         repository = new MarvelComicsRepositoryImpl(application);
     }
 
-    public LiveData<List<CharacterEntity>> getAllCharacters(MutableLiveData<Response> responseObserver){
-        return repository.getAllCharacters(responseObserver);
+    public LiveData<List<CharacterEntity>> getAllCharacters(MutableLiveData<Response> responseObserver, boolean isFetchFromApi){
+        return repository.getAllCharacters(responseObserver,isFetchFromApi);
     }
 
     public LiveData<List<CharacterEntity>> getSearchList(String query){
