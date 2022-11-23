@@ -1,4 +1,4 @@
-package cm.velotio.marvelcomics.ui;
+package cm.velotio.marvelcomics.ui.home_screen;
 
 import android.app.Application;
 

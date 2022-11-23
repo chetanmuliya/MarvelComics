@@ -7,14 +7,13 @@ import java.util.List;
 
 import cm.velotio.marvelcomics.constant.Response;
 import cm.velotio.marvelcomics.database.local.CharacterEntity;
-import cm.velotio.marvelcomics.model.CharactersResponse;
-import cm.velotio.marvelcomics.model.ResultsItem;
+import cm.velotio.marvelcomics.model.ItemsItem;
 
 public interface MarvelComicsRepository {
 
     LiveData<List<CharacterEntity>> getAllCharacters(MutableLiveData<Response> responseObserver,boolean isFetchFromApi);
 
-    List<CharacterEntity> getCharactersById();
+    MutableLiveData<List<ItemsItem>> getCharactersById(String id,MutableLiveData<Response> responseObserver);
 
     void addCharacters(CharacterEntity character);
 

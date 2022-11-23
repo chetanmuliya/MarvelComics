@@ -1,4 +1,4 @@
-package cm.velotio.marvelcomics.ui;
+package cm.velotio.marvelcomics.ui.home_screen;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -19,16 +19,9 @@ import java.util.List;
 
 import cm.velotio.marvelcomics.R;
 import cm.velotio.marvelcomics.constant.Response;
-import cm.velotio.marvelcomics.constant.Util;
 import cm.velotio.marvelcomics.database.local.CharacterEntity;
-import cm.velotio.marvelcomics.database.remote.MarvelComicsService;
-import cm.velotio.marvelcomics.database.remote.RetrofitClient;
 import cm.velotio.marvelcomics.databinding.ActivityMainBinding;
-import cm.velotio.marvelcomics.model.CharactersResponse;
-import cm.velotio.marvelcomics.model.ResultsItem;
 import cm.velotio.marvelcomics.ui.adapter.CharactersAdapter;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity {
 

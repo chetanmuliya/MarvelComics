@@ -1,7 +1,9 @@
 package cm.velotio.marvelcomics.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import cm.velotio.marvelcomics.database.local.CharacterEntity;
 import cm.velotio.marvelcomics.databinding.ItemMarvelCharacterBinding;
+import cm.velotio.marvelcomics.ui.detail_screen.CharacterDetailsActivity;
 
 public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.ViewHolder> {
 
@@ -38,7 +41,13 @@ public class CharactersAdapter extends RecyclerView.Adapter<CharactersAdapter.Vi
         Glide.with(context).load(character.thumbnail+"."+character.extension)
                 .into(holder.binding.ivCharacter);
         holder.binding.tvName.setText(character.name);
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, CharacterDetailsActivity.class)
+                        .putExtra(CharacterDetailsActivity.CHARACTER_ID,character.id));
+            }
+        });
     }
 
     public void submitList(List<CharacterEntity> newList){
