@@ -21,7 +21,7 @@ public interface MarvelComicsService {
 
     @GET("/v1/public/characters/{id}")
     Single<CharactersResponse> getCharactersById(
-            @Path("id") String id,
+            @Path("id") int id,
             @Query("apikey") String API_KEY,
             @Query("hash") String HASH,
             @Query("ts") String TS,

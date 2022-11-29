@@ -67,62 +67,68 @@
 
         <TextView
             android:id="@+id/tvComics1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Top 5 Comics"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.134"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <TextView
             android:id="@+id/tvComics2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Top 5 Comics"
+            android:layout_marginEnd="16dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.132"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvComics1"
             app:layout_constraintTop_toBottomOf="@+id/tvComics1" />
 
         <TextView
             android:id="@+id/tvComics3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Top 5 Comics"
             android:layout_marginTop="16dp"
             android:textSize="18sp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.134"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvComics2"
             app:layout_constraintTop_toBottomOf="@+id/tvComics2" />
 
         <TextView
             android:id="@+id/tvComics4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Top 5 Comics"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.134"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvComics3"
             app:layout_constraintTop_toBottomOf="@+id/tvComics3" />
 
         <TextView
             android:id="@+id/tvComics5"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Top 5 Comics"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.134"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvComics4"
             app:layout_constraintTop_toBottomOf="@+id/tvComics4" />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

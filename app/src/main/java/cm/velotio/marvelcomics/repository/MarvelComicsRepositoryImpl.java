@@ -21,6 +21,7 @@ import cm.velotio.marvelcomics.model.ItemsItem;
 import cm.velotio.marvelcomics.model.ResultsItem;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -124,7 +125,7 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
     }
 
     @Override
-    public MutableLiveData<List<ItemsItem>> getCharactersById(String id,MutableLiveData<Response> responseObserver) {
+    public MutableLiveData<List<ItemsItem>> getCharactersById(int id,MutableLiveData<Response> responseObserver) {
         return getCharacterComicsListByIdfromApi(id,responseObserver);
     }
 
@@ -136,6 +137,11 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
     @Override
     public void addAllCharacters(List<CharacterEntity> characters) {
 
+    }
+
+    @Override
+    public Single<CharacterEntity> getCharacterInfoByID(String id) {
+        return dao.getCharactersById(id);
     }
 
     @Override
@@ -156,8 +162,8 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
     }
 
     //get characters comics list by character id
-    private MutableLiveData<List<ItemsItem>> getCharacterComicsListByIdfromApi(String id, MutableLiveData<Response> responseObserver) {
-        api.getCharactersById(Util.API_KEY,id, Util.hash(), Util.ts, Util.LIMIT)
+    private MutableLiveData<List<ItemsItem>> getCharacterComicsListByIdfromApi(int id, MutableLiveData<Response> responseObserver) {
+        api.getCharactersById(id,Util.API_KEY, Util.hash(), Util.ts, Util.LIMIT)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<CharactersResponse>() {
@@ -171,7 +177,7 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
                                 responseObserver.postValue(Response.success("SUCCESS"));
                             }
                         }else{
-                            Log.d("*************", "onChanged: nulllll");
+                            Log.d("*************", "onChanged: nulllll "+id);
                             comicsItems.postValue(null);
                             responseObserver.postValue(Response.error("Something went wrong!"));
                         }
@@ -180,7 +186,7 @@ public class MarvelComicsRepositoryImpl implements MarvelComicsRepository{
                     @Override
                     public void onError(@NonNull Throwable e) {
                         comicsItems.postValue(null);
-                        Log.d("*************", "onChanged: erroorr "+e.getMessage());
+                        Log.d("*************", "onChanged: erroorr "+e.getMessage()+"id "+id);
                         responseObserver.postValue(Response.error("Something went wrong!"));
                     }
                 });

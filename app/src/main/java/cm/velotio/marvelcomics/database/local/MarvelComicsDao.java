@@ -39,7 +39,7 @@ public interface MarvelComicsDao {
     Flowable<List<CharacterEntity>> searchCharacters(String query);
 
     @Query("SELECT * FROM characters WHERE id = :cid")
-    CharacterEntity getCharactersById(String cid);
+    Single<CharacterEntity> getCharactersById(String cid);
 }
 
 

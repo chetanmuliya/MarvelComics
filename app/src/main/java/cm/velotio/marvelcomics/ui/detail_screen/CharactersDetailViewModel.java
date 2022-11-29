@@ -14,6 +14,7 @@ import cm.velotio.marvelcomics.database.local.CharacterEntity;
 import cm.velotio.marvelcomics.model.ItemsItem;
 import cm.velotio.marvelcomics.repository.MarvelComicsRepository;
 import cm.velotio.marvelcomics.repository.MarvelComicsRepositoryImpl;
+import io.reactivex.rxjava3.core.Single;
 
 public class CharactersDetailViewModel extends AndroidViewModel {
 
@@ -25,7 +26,11 @@ public class CharactersDetailViewModel extends AndroidViewModel {
         repository = new MarvelComicsRepositoryImpl(application);
     }
 
-    public LiveData<List<ItemsItem>> getCharactersById(String id,MutableLiveData<Response> responseObserver){
+    public LiveData<List<ItemsItem>> getCharactersById(int id,MutableLiveData<Response> responseObserver){
         return repository.getCharactersById(id,responseObserver);
+    }
+
+    public Single<CharacterEntity> getCharactersById(String cid){
+        return repository.getCharacterInfoByID(cid);
     }
 }
